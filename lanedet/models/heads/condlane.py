@@ -706,8 +706,8 @@ class CondLaneHead(nn.Module):
         self.mlp = MLP(self.feat_width, 64, 2, 2)
 
         self.post_process = CondLanePostProcessor(
-                mask_size=self.cfg.mask_size, hm_thr=0.5, use_offset=True,
-                nms_thr=4)
+                mask_size=self.cfg.mask_size, hm_thr=self.cfg.hm_thr, use_offset=True,
+                nms_thr=self.cfg.nms_thr)
 
         self.loss_impl = CondLaneLoss(cfg.loss_weights, 1)
     
@@ -1010,7 +1010,7 @@ class CondLaneHead(nn.Module):
             **kwargs):
         if self.training:
             return self.forward_train(x_list, kwargs['batch'])
-        return self.forward_test(x_list, )
+        return self.forward_test(x_list, hm_thr=self.cfg.hm_thr)
 
     def get_lanes(self, output):
         out_seeds, out_hm = output['seeds'], output['hm']

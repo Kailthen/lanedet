@@ -44,5 +44,9 @@ def load_network(net, model_dir, finetune_from=None, logger=None):
             logger.info('Finetune model from: ' + finetune_from)
         load_network_specified(net, finetune_from, logger)
         return
-    pretrained_model = torch.load(model_dir)
+    
+    if model_dir.startswith("http"):
+        pretrained_model = torch.hub.load_state_dict_from_url(model_dir)
+    else:
+        pretrained_model = torch.load(model_dir)
     net.load_state_dict(pretrained_model['net'], strict=True)

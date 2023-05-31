@@ -4,6 +4,7 @@ import cv2
 import os
 import os.path as osp
 import glob
+import json
 import argparse
 from PIL import Image
 from lanedet.datasets.process import Process
@@ -42,11 +43,26 @@ class Detect(object):
     def show(self, data):
         out_file = self.cfg.savedir 
         if out_file:
-            out_file = osp.join(out_file, osp.basename(data['img_path']))
+            out_file = osp.join(out_file, "vis", osp.basename(data['img_path']))
         lanes = [lane.to_array(self.cfg) for lane in data['lanes']]
         imshow_lanes(data['ori_img'], lanes, show=self.cfg.show, out_file=out_file)
 
-        # write to csv
+        # write to json
+        img_bfn,_ = osp.splitext(osp.basename(data['img_path']))
+        json_fn = f"{self.cfg.savedir}/{img_bfn}.json"
+
+        j_lanes = []
+        for i, l_arr in enumerate(lanes):
+            l_dict = {
+                "image_name": osp.basename(data['img_path']),
+                "points": l_arr.tolist(),
+                "class": 0,
+                "class_name": "unknown",
+                "color": 0,
+                "color_name": "unknown"
+            }
+            j_lanes.append(l_dict)
+        json.dump(j_lanes, open(json_fn, 'wt'))
 
     def run(self, data):
         data = self.preprocess(data)

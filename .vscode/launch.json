@@ -1,0 +1,22 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "tools/infer.py",
+            "console": "integratedTerminal",
+            "justMyCode": false,
+            "args": [
+                "configs/condlane/resnet101_culane2.py",
+                "--img", "/media/work/2t/datasets/boreas_parsed/20210910/033407_out/cam0/data",
+                "--load_from", "modelzoo/condlane_r101_culane.pth",
+                "--savedir", "./vis"
+            ]
+        }
+    ]
+}

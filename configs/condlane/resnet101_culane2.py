@@ -11,8 +11,6 @@ backbone = dict(
     in_channels=[64, 128, 256, 512]
 )
 
-sample_y = range(590, 270, -8)
-
 batch_size = 1
 aggregator = dict(
     type='TransConvEncoderModule',
@@ -82,8 +80,10 @@ img_norm = dict(
 img_height = 320 
 img_width = 800
 cut_height = 0 
-ori_img_h = 590
-ori_img_w = 1640
+ori_img_h = 1152
+ori_img_w = 2448
+
+sample_y = range(ori_img_h, 0, -8)
 
 mask_down_scale = 4
 hm_down_scale = 16
@@ -92,8 +92,10 @@ line_width = 3
 radius = 6
 nms_thr = 4
 img_scale = (800, 320)
-crop_bbox = [0, 270, 1640, 590]
+crop_bbox = [0, 0, ori_img_w, ori_img_h]
 mask_size = (1, 80, 200)
+
+hm_thr = 0.45
 
 train_process = [
     dict(type='Alaug',

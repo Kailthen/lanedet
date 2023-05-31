@@ -1,5 +1,5 @@
-torch==1.8.0
-torchvision==0.9.0
+torch
+torchvision
 pandas
 addict
 sklearn
@@ -8,10 +8,10 @@ pytorch_warmup
 scikit-image
 tqdm
 p_tqdm
-imgaug>=0.4.0
-Shapely==1.7.0
-ujson==1.35
+imgaug
+Shapely
+ujson
 yapf
-albumentations==0.4.6
-mmcv==1.2.5
+albumentations
+mmcv
 pathspec
