@@ -13,5 +13,4 @@ Shapely
 ujson
 yapf
 albumentations
-mmcv
 pathspec
