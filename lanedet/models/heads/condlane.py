@@ -1023,16 +1023,16 @@ class CondLaneHead(nn.Module):
                     img_shape=(self.cfg.img_height, self.cfg.img_width),
                     tgt_shape=(self.cfg.ori_img_h, self.cfg.ori_img_w),
                     )
-            lanes = []
-            for lane in result:
+            new_lanes = []
+            for lane, l in zip(result, lanes):
                 coord = []
                 for x, y in lane:
                     coord.append([x, y])
                 coord = np.array(coord)
                 coord[:, 0] /= self.cfg.ori_img_w
                 coord[:, 1] /= self.cfg.ori_img_h
-                lanes.append(Lane(coord))
-            ret.append(lanes)
+                new_lanes.append(Lane(coord, metadata=l))
+            ret.append(new_lanes)
 
         return ret
 

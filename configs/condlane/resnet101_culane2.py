@@ -95,7 +95,7 @@ img_scale = (800, 320)
 crop_bbox = [0, 0, ori_img_w, ori_img_h]
 mask_size = (1, 80, 200)
 
-hm_thr = 0.35
+hm_thr = 0.1
 
 train_process = [
     dict(type='Alaug',

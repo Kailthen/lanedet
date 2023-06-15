@@ -15,6 +15,8 @@ from lanedet.utils.net_utils import load_network
 from pathlib import Path
 from tqdm import tqdm
 
+from evadd import io_utils as IO
+
 class Detect(object):
     def __init__(self, cfg):
         self.cfg = cfg
@@ -45,7 +47,9 @@ class Detect(object):
         if out_file:
             out_file = osp.join(out_file, "vis", osp.basename(data['img_path']))
         lanes = [lane.to_array(self.cfg) for lane in data['lanes']]
-        imshow_lanes(data['ori_img'], lanes, show=self.cfg.show, out_file=out_file)
+        id_classes = [lane.metadata['id_class'] for lane in data['lanes']]
+        scores = [lane.metadata['score'] for lane in data['lanes']]
+        imshow_lanes(data['ori_img'], lanes, show=self.cfg.show, out_file=out_file, scores=scores)
 
         # write to json
         img_bfn,_ = osp.splitext(osp.basename(data['img_path']))
@@ -55,14 +59,16 @@ class Detect(object):
         for i, l_arr in enumerate(lanes):
             l_dict = {
                 "image_name": osp.basename(data['img_path']),
-                "points": l_arr.tolist(),
-                "class": 0,
+                "points": np.around(l_arr, decimals=3).tolist(),
+                "class": id_classes[i],
                 "class_name": "unknown",
                 "color": 0,
-                "color_name": "unknown"
+                "color_name": "unknown",
+                "score": scores[i],
             }
             j_lanes.append(l_dict)
-        json.dump(j_lanes, open(json_fn, 'wt'))
+        # json.dump(j_lanes, open(json_fn, 'wt'))
+        IO.save_to_json(json_fn, j_lanes)
 
     def run(self, data):
         data = self.preprocess(data)
